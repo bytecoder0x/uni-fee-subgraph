@@ -15,4 +15,5 @@ type DailyTotalFee @entity {
   id: ID!
   totalFee0: BigInt!
   totalFee1: BigInt!
+  firstSwapTimestamp: BigInt!
 }

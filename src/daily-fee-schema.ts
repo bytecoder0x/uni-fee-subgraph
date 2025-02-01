@@ -36,6 +36,10 @@ export class DailyTotalFee extends Entity {
 		this.set("totalFee1", Value.fromBigInt(fee));
 	}
 
+	set firstSwapTimestamp(value: BigInt) {
+		this.set("firstSwapTimestamp", Value.fromBigInt(value));
+	}
+
 	get totalFee0(): BigInt {
 		let value = this.get("totalFee0");
 		if (!value || value.kind == ValueKind.NULL) {
@@ -47,6 +51,15 @@ export class DailyTotalFee extends Entity {
 
 	get totalFee1(): BigInt {
 		let value = this.get("totalFee1");
+		if (!value || value.kind == ValueKind.NULL) {
+			throw new Error("Cannot return null for a required field.");
+		} else {
+			return value.toBigInt();
+		}
+	}
+
+	get firstSwapTimestamp(): BigInt {
+		let value = this.get("firstSwapTimestamp");
 		if (!value || value.kind == ValueKind.NULL) {
 			throw new Error("Cannot return null for a required field.");
 		} else {

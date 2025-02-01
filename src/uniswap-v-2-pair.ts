@@ -26,6 +26,7 @@ export function handleSwap(event: SwapEvent): void {
   
 	if (dailyTotalFee == null) {
 		dailyTotalFee = new DailyTotalFee(dayString);
+		dailyTotalFee.firstSwapTimestamp = event.block.timestamp;
 	}
 
 	const tokenInIs0 = event.params.amount0In.gt(BigInt.fromI32(0));
