@@ -1,5 +1,6 @@
 import { ORACLE_ADDRESS, PROVIDER, SCALE_FACTOR_FOR_USDC, V2_POOL_CONTRACT } from "./config";
 import { SCALE_FACTOR } from "./config";
+import { DailyTotalFee, TotalFeeInUSD } from "./interfaces/FeeInterfaces";
 import { ethers } from "ethers";
 import { oracleAbi } from "./abis/oracleABI";
 import { pairV2Abi } from "./abis/PairV2ABI";
@@ -26,4 +27,34 @@ export const getTVL = async (ethPrice: bigint): Promise<number> => {
 	const formattedTVL = Number(TVL.toFixed(2));
 
 	return formattedTVL;
+}
+
+export const getFormattedTotalFeeInUSD = (dailyTotalFees: DailyTotalFee[], ethPrice: bigint): TotalFeeInUSD => {
+	let totalFeeInUSD = 0;
+
+	const formattedDailyTotalFees = dailyTotalFees.map((dailyTotalFee: DailyTotalFee) => {
+		const ethFeeInUSD = BigInt(dailyTotalFee.totalFee1) * ethPrice / SCALE_FACTOR;
+		const usdcFee = BigInt(dailyTotalFee.totalFee0) * SCALE_FACTOR_FOR_USDC;
+		
+		const formattedDailyTotalFeeInUSD = (Number(ethFeeInUSD + usdcFee) / Number(SCALE_FACTOR)).toFixed(2);
+		totalFeeInUSD += Number(formattedDailyTotalFeeInUSD);
+
+		return {
+			date: dailyTotalFee.id,
+			totalFeeInUSD: Number(formattedDailyTotalFeeInUSD),
+		};
+	});
+
+	const formattedTotalFeeInUSD = Number(totalFeeInUSD.toFixed(2));
+	return {
+		formattedDailyTotalFees,
+		formattedTotalFeeInUSD
+	};
+}
+
+export const getAPR = (totalFeeInUSD: number, TVL: number, days: number): number => {
+	const APR = ((totalFeeInUSD / TVL) * 100) * (365 / days);
+	const formattedAPR = Number(APR.toFixed(3));
+
+	return formattedAPR;
 }
