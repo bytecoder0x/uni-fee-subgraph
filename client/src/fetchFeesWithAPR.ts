@@ -1,4 +1,4 @@
-import { getAPR, getEthPriceFromOracle, getFormattedTotalFeeInUSD, getTVL } from "./helpers";
+import { getAPR, getEthPriceFromOracle, getFormattedTotalFeeInUSD, getTVL, log } from "./helpers";
 import { getDailyTotalFee } from "./getDailyFees";
 
 const fetchDailyTotalFees = async () => {
@@ -18,10 +18,10 @@ const fetchDailyTotalFees = async () => {
 	const totalDays = formattedDailyTotalFees.length;
 	const endTimestamp = Date.now();
 
-	console.log(`Earnings in USD: ${formattedTotalFeeInUSD}$ for ${totalDays} days with TVL: ${TVL}$`);
-	console.log(`Current APR: ${APR}% based on ${totalDays} days`);
-	console.log(`Current APR based on last day: ${APRBasedOnLastDay}%`);
-	console.log(`Spend time: ${((endTimestamp - startTimestamp) / 1000).toFixed(2)} seconds`);
+	log.info(`Earnings in USD: ${formattedTotalFeeInUSD}$ for ${totalDays} days with TVL: ${TVL}$`);
+	log.info(`Current APR: ${APR}% based on ${totalDays} days`);
+	log.info(`Current APR based on last day: ${APRBasedOnLastDay}%`);
+	log.info(`Spend time: ${((endTimestamp - startTimestamp) / 1000).toFixed(2)} seconds`);
 }
 
 fetchDailyTotalFees();

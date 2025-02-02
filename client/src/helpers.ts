@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import { ORACLE_ADDRESS, PROVIDER, SCALE_FACTOR_FOR_USDC, V2_POOL_CONTRACT } from "./config";
 import { SCALE_FACTOR } from "./config";
 import { DailyTotalFee, TotalFeeInUSD } from "./interfaces/FeeInterfaces";
@@ -58,3 +59,11 @@ export const getAPR = (totalFeeInUSD: number, TVL: number, days: number): number
 
 	return formattedAPR;
 }
+
+export const log = {
+	start: (message: string) => console.log(chalk.white(`------------------------------ ${message} ------------------------------`)),
+	success: (msg: string) => console.log(chalk.green("✅ " + msg)),
+	error: (msg: string) => console.log(chalk.red("❌ " + msg)),
+	info: (msg: string) => console.log(chalk.blue("✍️  " + msg)),
+	warning: (msg: string) => console.log(chalk.yellow("⚠️  " + msg)),
+};
